@@ -15,7 +15,12 @@
     "format": "oxfmt src/"
   },
   "dependencies": {
+    "@guolao/vue-monaco-editor": "^1.6.0",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@tailwindcss/vite": "^4.1.18",
+    "lucide-vue-next": "^0.574.0",
     "pinia": "^3.0.4",
+    "tailwindcss": "^4.1.18",
     "vue": "^3.5.28",
     "vue-router": "^5.0.2"
   },
