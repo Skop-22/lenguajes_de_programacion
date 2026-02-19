@@ -1,8 +1,8 @@
 import type { SupportedLanguage } from "./types.ts";
 
 export const INITIAL_CODE: Record<SupportedLanguage, string> = {
-  javascript: `// Welcome to Gemini IDE
-// Click 'Run' to execute this code
+  javascript: `// Bienbenido a IDE online
+// Click 'Run'
 
 const greeting = "Hello, World!";
 console.log(greeting);
@@ -14,10 +14,18 @@ function fibonacci(n) {
 
 console.log("Fibonacci(10):", fibonacci(10));
 `,
-  json: `{ "name": "Gemini IDE", "version": "1.0.0" }`,
+  json: `{ "name": "ID Nuevo", "version": "1.0.0" }`,
+  basic: `
+A = 5
+B = 3
+PRINT "Resultado: ", A + B
+IF A > B THEN PRINT "A es mayor"
+END
+`,
 };
 
 export const LANGUAGES: { value: SupportedLanguage; label: string }[] = [
   { value: "javascript", label: "JavaScript" },
   { value: "json", label: "JSON" },
+  { value: "basic", label: "basic" },
 ];

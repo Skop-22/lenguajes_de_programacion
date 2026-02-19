@@ -1,4 +1,5 @@
 import { ref } from "vue";
+import { ejecutar } from "./lenguage/basic.ts"; // importa tu ejecutar
 
 export interface LogEntry {
   type: "log" | "error" | "warn" | "info";
@@ -18,51 +19,76 @@ export function useExecution() {
     isExecuting.value = true;
     const newLogs: LogEntry[] = [];
 
-    // Soporte real solo para JavaScript / TypeScript
+    const captureLog = (type: LogEntry["type"], content: string) => {
+      newLogs.push({
+        type,
+        content,
+        timestamp: new Date(),
+      });
+    };
+
+    // 🔥 SOPORTE JAVASCRIPT
     if (language === "javascript" || language === "typescript") {
-      const captureLog = (type: LogEntry["type"], ...args: any[]) => {
-        const content = args
-          .map((arg) =>
-            typeof arg === "object" ? JSON.stringify(arg, null, 2) : String(arg)
-          )
-          .join(" ");
-
-        newLogs.push({
-          type,
-          content,
-          timestamp: new Date(),
-        });
-      };
-
-      // Consola sandbox
       const sandboxConsole = {
-        log: (...args: any[]) => captureLog("log", ...args),
-        error: (...args: any[]) => captureLog("error", ...args),
-        warn: (...args: any[]) => captureLog("warn", ...args),
-        info: (...args: any[]) => captureLog("info", ...args),
+        log: (...args: unknown[]) =>
+          captureLog(
+            "log",
+            args.map((a) => String(a)).join(" "),
+          ),
+        error: (...args: unknown[]) =>
+          captureLog(
+            "error",
+            args.map((a) => String(a)).join(" "),
+          ),
+        warn: (...args: unknown[]) =>
+          captureLog(
+            "warn",
+            args.map((a) => String(a)).join(" "),
+          ),
+        info: (...args: unknown[]) =>
+          captureLog(
+            "info",
+            args.map((a) => String(a)).join(" "),
+          ),
       };
 
       try {
-        // Sandbox básico (solo demostración)
         const run = new Function("console", code);
         run(sandboxConsole);
-      } catch (err: any) {
-        captureLog("error", `Execution Error: ${err.message}`);
-      } finally {
-        logs.value = [...logs.value, ...newLogs];
-        isExecuting.value = false;
+      } catch (err) {
+        captureLog("error", err instanceof Error ? err.message : String(err));
       }
-    } else {
-      // Simulación para otros lenguajes
-      logs.value.push({
-        type: "info",
-        content:
-          `Execution for ${language} is currently only available via backend integration. Simulating output...`,
-        timestamp: new Date(),
-      });
+    } // 🔥 SOPORTE BASIC
+    else if (language === "basic") {
+      try {
+        // Guardamos console original
+        const originalLog = console.log;
 
-      isExecuting.value = false;
+        // Interceptamos console.log
+        console.log = (...args: unknown[]) => {
+          captureLog(
+            "log",
+            args.map((a) => String(a)).join(" "),
+          );
+        };
+
+        ejecutar(code);
+
+        // Restauramos console
+        console.log = originalLog;
+      } catch (err) {
+        captureLog("error", err instanceof Error ? err.message : String(err));
+      }
+    } // 🔥 Otros lenguajes
+    else {
+      captureLog(
+        "info",
+        `Execution for ${language} is not implemented.`,
+      );
     }
+
+    logs.value = [...logs.value, ...newLogs];
+    isExecuting.value = false;
   };
 
   return {
