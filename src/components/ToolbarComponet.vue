@@ -6,7 +6,7 @@
 
       <div class="flex items-center gap-2 text-blue-400 font-bold">
         <Cpu :size="20" />
-        <span class="text-sm tracking-wider uppercase">Nuevo</span>
+        <span class="text-sm tracking-wider uppercase">Nuevo IDE Online</span>
       </div>
 
       <div class="h-6 w-[1px] bg-[#333]" />

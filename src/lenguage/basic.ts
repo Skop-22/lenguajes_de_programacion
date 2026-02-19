@@ -12,86 +12,110 @@ const END = 5;
 const EOL = 6;
 const FINISHED = 7;
 
-let variables = new Array(26).fill(0);
-let programa = "";
-let progIndex = 0;
-let token = "";
-let tokenTipo = 0;
-let instruccion = 0;
+let variables: number[] = new Array(26).fill(0);
+let programa: string = "";
+let progIndex: number = 0;
+let token: string = "";
+let tokenTipo: number = 0;
+let instruccion: number = 0;
 
-const tablaInstrucciones = {
+const tablaInstrucciones: Record<string, number> = {
   print: PRINT,
   input: INPUT,
   if: IF,
   then: THEN,
-  end: END
+  end: END,
 };
 
-function esBlanco(c) {
+function esBlanco(c: string): boolean {
   return c === " " || c === "\t";
 }
 
-function esDelimitador(c) {
+function esDelimitador(c: string): boolean {
   return "+-*/%=<>(),".includes(c);
 }
 
-function lexico() {
+function lexico(): number {
   token = "";
   instruccion = 0;
 
   if (progIndex >= programa.length) {
     instruccion = FINISHED;
-    return tokenTipo = DELIMITADOR;
+    tokenTipo = DELIMITADOR;
+    return tokenTipo;
   }
 
-  while (esBlanco(programa[progIndex])) progIndex++;
+  while (progIndex < programa.length && esBlanco(programa[progIndex]!)) {
+    progIndex++;
+  }
 
-  let c = programa[progIndex];
+  if (progIndex >= programa.length) {
+    instruccion = FINISHED;
+    tokenTipo = DELIMITADOR;
+    return tokenTipo;
+  }
+
+  let c: string = programa[progIndex]!;
 
   if (c === "\n") {
     progIndex++;
     instruccion = EOL;
-    return tokenTipo = DELIMITADOR;
+    tokenTipo = DELIMITADOR;
+    return tokenTipo;
   }
 
   if (esDelimitador(c)) {
     token = c;
     progIndex++;
-    return tokenTipo = DELIMITADOR;
+    tokenTipo = DELIMITADOR;
+    return tokenTipo;
   }
 
   if (c === '"') {
     progIndex++;
-    while (programa[progIndex] !== '"') {
-      token += programa[progIndex++];
+    while (progIndex < programa.length && programa[progIndex] !== '"') {
+      token += programa[progIndex]!;
+      progIndex++;
     }
     progIndex++;
-    return tokenTipo = COMILLA;
+    tokenTipo = COMILLA;
+    return tokenTipo;
   }
 
   if (/\d/.test(c)) {
-    while (/\d/.test(programa[progIndex])) {
-      token += programa[progIndex++];
+    while (progIndex < programa.length && /\d/.test(programa[progIndex]!)) {
+      token += programa[progIndex]!;
+      progIndex++;
     }
-    return tokenTipo = NUMERO;
+    tokenTipo = NUMERO;
+    return tokenTipo;
   }
 
   if (/[a-z]/i.test(c)) {
-    while (/[a-z]/i.test(programa[progIndex])) {
-      token += programa[progIndex++];
+    while (progIndex < programa.length && /[a-z]/i.test(programa[progIndex]!)) {
+      token += programa[progIndex]!;
+      progIndex++;
     }
+
     token = token.toLowerCase();
 
-    if (tablaInstrucciones[token]) {
-      instruccion = tablaInstrucciones[token];
-      return tokenTipo = INSTRUCCION;
+    const instr = tablaInstrucciones[token as keyof typeof tablaInstrucciones];
+
+    if (instr !== undefined) {
+      instruccion = instr;
+      tokenTipo = INSTRUCCION;
+      return tokenTipo;
     }
 
-    return tokenTipo = VARIABLE;
+    tokenTipo = VARIABLE;
+    return tokenTipo;
   }
+
+  tokenTipo = DELIMITADOR;
+  return tokenTipo;
 }
 
-function primitiva() {
+function primitiva(): number {
   if (tokenTipo === NUMERO) {
     let v = parseInt(token);
     lexico();
@@ -101,13 +125,13 @@ function primitiva() {
   if (tokenTipo === VARIABLE) {
     let idx = token.toUpperCase().charCodeAt(0) - 65;
     lexico();
-    return variables[idx];
+    return variables[idx]!;
   }
 
-  throw "Expresión inválida";
+  throw new Error("Expresión inválida");
 }
 
-function termino() {
+function termino(): number {
   let resultado = primitiva();
 
   while (token === "*" || token === "/") {
@@ -122,7 +146,7 @@ function termino() {
   return resultado;
 }
 
-function expresion() {
+function expresion(): number {
   let resultado = termino();
 
   while (token === "+" || token === "-") {
@@ -137,7 +161,7 @@ function expresion() {
   return resultado;
 }
 
-function ejecutarPrint() {
+function ejecutarPrint(): void {
   let salida = "";
 
   do {
@@ -152,13 +176,12 @@ function ejecutarPrint() {
       let val = expresion();
       salida += val;
     }
-
   } while (token === ",");
 
   console.log(salida);
 }
 
-function ejecutarIf() {
+function ejecutarIf(): void {
   lexico();
   let izq = expresion();
 
@@ -174,18 +197,20 @@ function ejecutarIf() {
   if (op === ">") condicion = izq > der;
 
   if (!condicion) {
-    while (programa[progIndex] !== "\n" &&
-           progIndex < programa.length) {
+    while (
+      progIndex < programa.length &&
+      programa[progIndex] !== "\n"
+    ) {
       progIndex++;
     }
   }
 }
 
-function ejecutarAsignacion() {
+function ejecutarAsignacion(): void {
   let varIdx = token.toUpperCase().charCodeAt(0) - 65;
 
   lexico();
-  if (token !== "=") throw "Se esperaba =";
+  if (token !== "=") throw new Error("Se esperaba =");
 
   lexico();
   let val = expresion();
@@ -193,7 +218,7 @@ function ejecutarAsignacion() {
   variables[varIdx] = val;
 }
 
-function ejecutar(codigo) {
+export function ejecutar(codigo: string): void {
   programa = codigo;
   progIndex = 0;
 
@@ -219,12 +244,13 @@ function ejecutar(codigo) {
   }
 }
 
-const codigo = `
-A = 5
-B = 3
-PRINT "Resultado: ", A + B
-IF A > B THEN PRINT "A es mayor"
-END
-`;
+// const codigo = `
+// A = 5
+// B = 3
+// PRINT "Resultado: ", A + B
+// IF A > B THEN PRINT "A es mayor"
+// END
+// `;
+//
+// ejecutar(codigo);
 
-ejecutar(codigo);

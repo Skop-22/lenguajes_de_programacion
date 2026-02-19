@@ -50,8 +50,6 @@ function handleRun() {
               {{
                 language === 'javascript'
                   ? 'js'
-                  : language === 'python'
-                  ? 'py'
                   : language
               }}
             </span>
