@@ -46,3 +46,120 @@ npm run build
 ```sh
 npm run lint
 ```
+
+# 🧠 Proyecto Experimental: Creación de un Lenguaje de Programación
+
+## Descripción
+
+Este proyecto es una prueba experimental para la creación de un lenguaje de programación propio, desarrollado desde cero utilizando Vue.js y TypeScript.
+
+El objetivo principal es diseñar e implementar los componentes fundamentales de un lenguaje, incluyendo su análisis, interpretación y ejecución dentro de un entorno interactivo.
+
+---
+
+## Arquitectura del Proyecto
+
+El sistema está compuesto por:
+
+### 1. Análisis Léxico (Lexer)
+
+Se encarga de:
+
+- Leer el código fuente carácter por carácter.
+- Identificar tokens como:
+  - Variables
+  - Números
+  - Instrucciones (`PRINT`, `IF`, `END`)
+  - Operadores
+  - Delimitadores
+
+---
+
+### 2. Intérprete
+
+Procesa los tokens generados por el lexer y ejecuta:
+
+- Asignaciones de variables
+- Operaciones aritméticas
+- Condiciones (`IF`)
+- Impresiones en consola (`PRINT`)
+- Finalización del programa (`END`)
+
+---
+
+### 3. Consola Interactiva
+
+Desarrollada en Vue, permite:
+
+- Mostrar logs de ejecución
+- Mostrar errores
+- Visualizar advertencias
+- Limpiar la salida
+- Scroll automático al último mensaje
+
+---
+
+## Sintaxis Actual del Lenguaje
+
+
+### Asignación
+```
+A = 5
+B = 3
+```
+
+### Operaciones
+```
+A + B
+A - B
+A * B
+A / B
+```
+
+### Impresión
+> PRINT "Resultado:", A + B
+
+### Condicional
+> IF A > B THEN PRINT "A es mayor"
+
+### Finalización
+> END
+
+
+## Objetivos del Proyecto
+
+- Comprender cómo funciona internamente un lenguaje de programación.
+- Implementar un intérprete desde cero.
+- Diseñar reglas sintácticas personalizadas.
+- Experimentar con parsing y ejecución.
+- Aprender fundamentos de compiladores e intérpretes.
+
+---
+
+## Flujo de Ejecución
+
+1. El usuario escribe código en el editor.
+2. El lexer analiza el texto y genera tokens.
+3. El intérprete procesa las instrucciones.
+4. Los resultados se muestran en la consola interactiva.
+
+---
+
+## Estado Actual
+
+-  Soporte para variables  
+-  Operaciones aritméticas básicas  
+-  Condicional simple (`IF`)  
+-  Impresión en consola  
+-  Sistema de logs estructurado  
+
+---
+
+## Futuras Mejoras
+
+- Soporte para bucles (`WHILE`, `FOR`)
+- Funciones
+- Mejor manejo de errores
+- Sistema de tipos
+- Compilación a JavaScript
+- Debugger visual
