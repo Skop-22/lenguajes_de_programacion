@@ -82,16 +82,12 @@ A / B
 - Experimentar con parsing y ejecución.
 - Aprender fundamentos de compiladores e intérpretes.
 
----
-
 ## Flujo de Ejecución
 
 1. El usuario escribe código en el editor.
 2. El lexer analiza el texto y genera tokens.
 3. El intérprete procesa las instrucciones.
 4. Los resultados se muestran en la consola interactiva.
-
----
 
 ## Estado Actual
 
@@ -100,17 +96,6 @@ A / B
 -  Condicional simple (`IF`)  
 -  Impresión en consola  
 -  Sistema de logs estructurado  
-
----
-
-## Futuras Mejoras
-
-- Soporte para bucles (`WHILE`, `FOR`)
-- Funciones
-- Mejor manejo de errores
-- Sistema de tipos
-- Compilación a JavaScript
-- Debugger visual
 
 ## Recommended IDE Setup
 

@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { ejecutar } from "./lenguage/basic.ts"; // importa tu ejecutar
+import { ejecutar } from "./lenguage/basic.ts";
 
 export interface LogEntry {
   type: "log" | "error" | "warn" | "info";
@@ -26,8 +26,6 @@ export function useExecution() {
         timestamp: new Date(),
       });
     };
-
-    // 🔥 SOPORTE JAVASCRIPT
     if (language === "javascript" || language === "typescript") {
       const sandboxConsole = {
         log: (...args: unknown[]) =>
@@ -58,13 +56,10 @@ export function useExecution() {
       } catch (err) {
         captureLog("error", err instanceof Error ? err.message : String(err));
       }
-    } // 🔥 SOPORTE BASIC
-    else if (language === "basic") {
+    } else if (language === "basic") {
       try {
-        // Guardamos console original
         const originalLog = console.log;
 
-        // Interceptamos console.log
         console.log = (...args: unknown[]) => {
           captureLog(
             "log",
@@ -74,13 +69,11 @@ export function useExecution() {
 
         ejecutar(code);
 
-        // Restauramos console
         console.log = originalLog;
       } catch (err) {
         captureLog("error", err instanceof Error ? err.message : String(err));
       }
-    } // 🔥 Otros lenguajes
-    else {
+    } else {
       captureLog(
         "info",
         `Execution for ${language} is not implemented.`,
