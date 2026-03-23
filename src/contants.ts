@@ -24,6 +24,6 @@ END
 };
 
 export const LANGUAGES: { value: SupportedLanguage; label: string }[] = [
-  { value: "javascript", label: "JavaScript" },
   { value: "basic", label: "basic" },
+  { value: "javascript", label: "JavaScript" },
 ];

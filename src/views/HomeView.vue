@@ -7,8 +7,8 @@ import { useExecution } from '../useExecution'
 import { INITIAL_CODE } from '../contants'
 import type { SupportedLanguage } from '../types'
 
-const language=ref<SupportedLanguage>('javascript')
-const code=ref<string>(INITIAL_CODE.javascript)
+const language=ref<SupportedLanguage>('basic')
+const code=ref<string>(INITIAL_CODE.basic)
 
 const { logs,isExecuting,executeCode,clearLogs }=useExecution()
 
