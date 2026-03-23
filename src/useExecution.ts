@@ -26,7 +26,7 @@ export function useExecution() {
         timestamp: new Date(),
       });
     };
-    if (language === "javascript" || language === "typescript") {
+    if (language === "javascript") {
       const sandboxConsole = {
         log: (...args: unknown[]) =>
           captureLog(

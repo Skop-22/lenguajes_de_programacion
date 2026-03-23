@@ -1,7 +1,6 @@
 export type SupportedLanguage =
   | "javascript"
-  | "basic"
-  | "json";
+  | "basic";
 
 export type LogType = "log" | "error" | "warn" | "info";
 

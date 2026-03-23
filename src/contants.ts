@@ -14,7 +14,6 @@ function fibonacci(n) {
 
 console.log("Fibonacci(10):", fibonacci(10));
 `,
-  json: `{ "name": "ID Nuevo", "version": "1.0.0" }`,
   basic: `
 A = 5
 B = 3
@@ -26,6 +25,5 @@ END
 
 export const LANGUAGES: { value: SupportedLanguage; label: string }[] = [
   { value: "javascript", label: "JavaScript" },
-  { value: "json", label: "JSON" },
   { value: "basic", label: "basic" },
 ];
